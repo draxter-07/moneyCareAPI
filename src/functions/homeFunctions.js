@@ -65,7 +65,7 @@ export default function getHome(req, res){
 
         //graph
         // completa com os meses faltantes e verifica o máximo e o mínimo
-        let graphMax = 0;
+        let graphMax = -999999999999999;
         let graphMin = 999999999999999;
         if(categoryMonthResult.length != 13){
             for(let m = nowMonth; m <= 12; m++){
@@ -93,32 +93,88 @@ export default function getHome(req, res){
             if(categoryMonthResult[a].result > graphMax){
                 graphMax = categoryMonthResult[a].result
             }
-            if(categoryMonthResult[a].result < graphMin){
+            else if(categoryMonthResult[a].result < graphMin){
                 graphMin = categoryMonthResult[a].result
             }
         }
 
-        console.log(categoryMonthResult)
-        console.log(graphMax)
-        console.log(graphMin)
+        let graphBody = [];
+        //gera as porcentagens no gráfico
+        let cx = 5;
+        for(let b = nowMonth; b <= 12; b++){
+            cx += 7.5;
+            for(let q = 0; q < categoryMonthResult.length; q++){
+                if(categoryMonthResult[q].date.month == b && categoryMonthResult[q].date.year == nowYear - 1){
+                    let cat = categoryMonthResult[q]
+                    let title
+                    let reference
+                    if (graphMax >= 0){
+                        reference = graphMax - graphMin
+                    }
+                    else{
+                        reference = graphMin - graphMax
+                    }
+                    let porcentage
+                    if(graphMin < 0){
+                        if(cat.result >= 0){
+                            porcentage = Math.round(((cat.result - graphMin)/reference)*90 + 5).toString() + "%";
+                            title = add0(cat.date.month.toString()) + "/" + cat.date.year.toString() + " - " + returnR$(cat.result)[0];
+                        }
+                        else{
+                            porcentage = Math.round(((graphMin - cat.result)/reference)*90 + 5).toString() + "%";
+                            title = add0(cat.date.month.toString()) + "/" + cat.date.year.toString() + " - -" + returnR$(cat.result)[0];
+                        }
+                    }
+                    else{
+                        porcentage = Math.round(((cat.result + graphMin)/reference)*90 + 5).toString() + "%";
+                        title = add0(cat.date.month.toString()) + "/" + cat.date.year.toString() + " - " + returnR$(cat.result)[0];
+                    }
+                    
+                    graphBody.push({porcentage: porcentage, title: title, cx: cx.toString() + "%"})
+                    break;
+                }
+            }
+        }
+        for(let d = 1; d <= nowMonth; d++){
+            cx += 7.5;
+            for(let w = 0; w < categoryMonthResult.length; w++){
+                if(categoryMonthResult[w].date.month == d && categoryMonthResult[w].date.year == nowYear){
+                    let cat = categoryMonthResult[w]
+                    let title
+                    let reference
+                    if (graphMax >= 0){
+                        reference = graphMax - graphMin
+                    }
+                    else{
+                        reference = graphMin - graphMax
+                    }
+                    let porcentage
+                    if(graphMin < 0){
+                        if(cat.result >= 0){
+                            porcentage = Math.round(((cat.result - graphMin)/reference)*90 + 5).toString() + "%";
+                            title = add0(cat.date.month.toString()) + "/" + cat.date.year.toString() + " - " + returnR$(cat.result)[0];
+                        }
+                        else{
+                            porcentage = Math.round(((graphMin - cat.result)/reference)*90 + 5).toString() + "%";
+                            title = add0(cat.date.month.toString()) + "/" + cat.date.year.toString() + " - -" + returnR$(cat.result)[0];
+                        }
+                    }
+                    else{
+                        porcentage = Math.round(((cat.result - graphMin)/reference)*90 + 5).toString() + "%";
+                        title = add0(cat.date.month.toString()) + "/" + cat.date.year.toString() + " - " + returnR$(cat.result)[0];
+                    }
+                    
+                    graphBody.push({porcentage: porcentage, title: title, cx: cx.toString() + "%"})
+                    break;
+                }
+            }
+        }
 
         infoDetArray.push({category: categoryName, 
                         transactions: categoryTransactions.reverse(), 
                         result: result, 
                         graph: {
-                            body: [{porcentage: "95%", title: "03/2022 - R$ 0,00", cx: "5%"},
-                                {porcentage: "95%", title: "04/2022 - R$ 0,00", cx: "12.5%"},
-                                {porcentage: "95%", title: "05/2022 - R$ 0,00", cx: "20%"},
-                                {porcentage: "95%", title: "06/2022 - R$ 0,00", cx: "27.5%"},
-                                {porcentage: "95%", title: "07/2022 - R$ 0,00", cx: "35%"},
-                                {porcentage: "95%", title: "08/2022 - R$ 0,00", cx: "42.5%"},
-                                {porcentage: "95%", title: "09/2022 - R$ 0,00", cx: "50%"},
-                                {porcentage: "95%", title: "10/2022 - R$ 0,00", cx: "57.5%"},
-                                {porcentage: "95%", title: "11/2022 - R$ 0,00", cx: "65%"},
-                                {porcentage: "95%", title: "12/2022 - R$ 0,00", cx: "72.5%"},
-                                {porcentage: "95%", title: "01/2023 - R$ 0,00", cx: "80%"},
-                                {porcentage: "50%", title: "02/2023 - R$ 215,00", cx: "87.5%"},
-                                {porcentage: "5%", title: "03/2023 - R$ 430,00", cx: "95%"}],
+                            body: graphBody,
                             lateral: [{value: "R$ 0.4k", y: "6%"}, 
                                 {value: "R$ ?", y: "28.5%"}, 
                                 {value: "R$ ?", y: "51%"}, 
