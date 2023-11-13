@@ -57,11 +57,50 @@ export default function getHome(req, res){
             }
         }
 
-        categoryMonthResult.push({date: {month: nowMonth, year: nowYear}, result: categoryTransactionsTotal})
-
         // Estabelece o resultado da categoria no mês
         let [value, type] = returnR$(categoryTransactionsTotal);
         let result = {value: value, type: type};
+
+        categoryMonthResult.push({date: {month: nowMonth, year: nowYear}, result: categoryTransactionsTotal})
+
+        //graph
+        // completa com os meses faltantes e verifica o máximo e o mínimo
+        let graphMax = 0;
+        let graphMin = 999999999999999;
+        if(categoryMonthResult.length != 13){
+            for(let m = nowMonth; m <= 12; m++){
+                for(let n = 0; n < categoryMonthResult.length; n++){
+                    if(categoryMonthResult[n].date.month == m && categoryMonthResult[n].date.year == nowYear - 1){
+                        break;
+                    }
+                    else if(n == categoryMonthResult.length - 1){
+                        categoryMonthResult.push({date: {month: m, year: nowYear - 1}, result: 0})
+                    }
+                }
+            }
+            for(let o = 1; o < nowMonth; o++){
+                for(let p = 0; p < categoryMonthResult.length; p++){
+                    if(categoryMonthResult[p].date.month == o && categoryMonthResult[p].date.year == nowYear){
+                        break;
+                    }
+                    else if(p == categoryMonthResult.length - 1){
+                        categoryMonthResult.push({date: {month: o, year: nowYear}, result: 0})
+                    }
+                }
+            }
+        }
+        for(let a = 0; a < categoryMonthResult.length; a++){
+            if(categoryMonthResult[a].result > graphMax){
+                graphMax = categoryMonthResult[a].result
+            }
+            if(categoryMonthResult[a].result < graphMin){
+                graphMin = categoryMonthResult[a].result
+            }
+        }
+
+        console.log(categoryMonthResult)
+        console.log(graphMax)
+        console.log(graphMin)
 
         infoDetArray.push({category: categoryName, 
                         transactions: categoryTransactions.reverse(), 
