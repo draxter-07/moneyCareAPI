@@ -17,6 +17,8 @@ export function returnR$(number){
         number = -number;
     }
 
+    number = Math.round((number) * 100) / 100;
+
     number = number.toString();
     number = number.replaceAll(".", ",");
     if(number.length <= 2){

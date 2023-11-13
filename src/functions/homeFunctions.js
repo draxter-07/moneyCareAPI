@@ -4,7 +4,8 @@ import { verifyItem } from "./helpFunctions/array.js"
 export default function getHome(req, res){
     let a = {userLog: {userName: "Philippe", password: "123456789", userSince: {day: 7, month: 9, year: 2023}},
             categories: ["Mensal", "Crédito"],
-            transactions: [{name: "UCI", value: -28, date: {day: 1, month: 11, year: 2023}, categories: ["Mensal"]},
+            transactions: [{name: "Teste", value: 2, date: {day: 1, month: 10, year: 2023}, categories: ["Mensal"]},
+                        {name: "UCI", value: -28, date: {day: 1, month: 11, year: 2023}, categories: ["Mensal"]},
                         {name: "Burguer King", value: -30.80, date: {day: 1, month: 11, year: 2023}, categories: ["Mensal"]},
                         {name: "Pagamento da fatura", value: -6.13, date: {day: 2, month: 11, year: 2023}, categories: ["Mensal", "Crédito"]},
                         {name: "Sirene com o Blitzkow e Petrich", value: -20, date: {day: 4, month: 11, year: 2023}, categories: ["Mensal"]},
@@ -26,18 +27,37 @@ export default function getHome(req, res){
         let categoryName = a.categories[i];
         let categoryTransactions = [];
         let categoryTransactionsTotal = 0;
+        let categoryMonthResult = [];
 
-        // Separa as transações desse mês detalhadamente
+        // Separa as transações desse mês detalhadamente e também prepara o categoryMonthResult
         for(let j = 0; j < a.transactions.length; j++){
             let trans = a.transactions[j];
 
-            if(trans.date.year == nowYear && trans.date.month <= nowMonth && verifyItem(trans.categories, categoryName)){
+            if(trans.date.year == nowYear && trans.date.month == nowMonth && verifyItem(trans.categories, categoryName, null)){
                 let transName = add0(trans.date.day.toString()) + "/" + add0(trans.date.month.toString()) + "/" + trans.date.year.toString() + " - " + trans.name;
                 let [transValue, transType] = returnR$(trans.value);
                 categoryTransactionsTotal += trans.value;
                 categoryTransactions.push({name: transName, value: transValue, type: transType});
             }
+            else if(((trans.date.year == nowYear) || (trans.date.year == nowYear - 1 && trans.date.month >= nowMonth)) && verifyItem(trans.categories, categoryName, null)){
+                if(categoryMonthResult.length == 0){
+                    categoryMonthResult.push({date: {month: trans.date.month, year: trans.date.year}, result: trans.value})
+                }
+                else{
+                    for(let k = 0; k < categoryMonthResult.length; k++){
+                        if(categoryMonthResult[k].date.year == trans.date.year && categoryMonthResult[k].date.month == trans.date.month){
+                            categoryMonthResult[k].result += trans.value;
+                            break;
+                        }
+                        else if(k == categoryMonthResult.length - 1){
+                            categoryMonthResult.push({date: {month: trans.date.month, year: trans.date.year}, result: trans.value});
+                        }
+                    }
+                }
+            }
         }
+
+        categoryMonthResult.push({date: {month: nowMonth, year: nowYear}, result: categoryTransactionsTotal})
 
         // Estabelece o resultado da categoria no mês
         let [value, type] = returnR$(categoryTransactionsTotal);
