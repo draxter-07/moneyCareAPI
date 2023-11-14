@@ -1,11 +1,10 @@
-import { add0, returnR$ } from "./helpFunctions/numberStringify.js"
-import { verifyItem, arrange } from "./helpFunctions/array.js"
+import { add0, returnR$, returnGraphR$ } from "./helpFunctions/numberStringify.js"
+import { verifyItem, arrange, noDayArrange } from "./helpFunctions/array.js"
 
 export default function getHome(req, res){
     let a = {userLog: {userName: "Philippe", email: "philippe.idalgoprestes@gmail.com", password: "123456789", userSince: {day: 7, month: 9, year: 2023}},
             categories: ["Mensal", "Crédito"],
-            transactions: [{name: "Teste", value: 2, date: {day: 1, month: 10, year: 2023}, categories: ["Mensal"]},
-                        {name: "UCI", value: -28, date: {day: 1, month: 11, year: 2023}, categories: ["Mensal"]},
+            transactions: [{name: "UCI", value: -28, date: {day: 1, month: 11, year: 2023}, categories: ["Mensal"]},
                         {name: "Burguer King", value: -30.80, date: {day: 1, month: 11, year: 2023}, categories: ["Mensal"]},
                         {name: "Pagamento da fatura", value: -6.13, date: {day: 2, month: 11, year: 2023}, categories: ["Mensal", "Crédito"]},
                         {name: "Sirene com o Blitzkow e Petrich", value: -20, date: {day: 4, month: 11, year: 2023}, categories: ["Mensal"]},
@@ -110,11 +109,9 @@ export default function getHome(req, res){
                     }
                     else if(testMonth == nowMonth && categoryMonthResult[cmrIndex2].date.month == nowMonth && categoryMonthResult[cmrIndex2].date.year == nowYear){
                         nowMonthThisYearFound = 1;
-                        break;
                     }
                     else if(testMonth == nowMonth && categoryMonthResult[cmrIndex2].date.month == nowMonth && categoryMonthResult[cmrIndex2].date.year == nowYear - 1){
                         nowMonthLastYearFound = 1;
-                        break;
                     }
                     else if(cmrIndex2 == categoryMonthResult.length - 1){
                         let objYear;
@@ -150,34 +147,32 @@ export default function getHome(req, res){
             graphMin -+ 50;
         }
 
-        console.log(categoryMonthResult);
-
+        categoryMonthResult = noDayArrange(categoryMonthResult)
+        
         let graphBody = [];
         //gera as porcentagens no gráfico
-        let cx = 5;
-        for(let testMonth2 = nowMonth; testMonth2 <= 12; testMonth2++){
-            for(let cmrIndex3 = 0; cmrIndex3 < categoryMonthResult.length; cmrIndex3++){
-                let cat = categoryMonthResult[cmrIndex3]
-                let title
-                let reference = graphMax - graphMin;
-                if(categoryMonthResult[cmrIndex3].date.month == testMonth2 && categoryMonthResult[cmrIndex3].date.year == nowYear - 1){
-
-                    graphBody.push({porcentage: porcentage, title: title, cx: cx.toString() + "%"})
-                    break;
-                }
-            }
+        let cx = -2.5;
+        for(let cmrIndex3 = 0; cmrIndex3 < categoryMonthResult.length; cmrIndex3++){
+            cx += 7.5
+            let cat = categoryMonthResult[cmrIndex3]
+            let title = add0(cat.date.month.toString()) + "/" + cat.date.year.toString() + ": " + returnGraphR$(cat.result)
+            let reference = graphMax - graphMin
+            let porcentage = Math.round(((graphMax - cat.result)/reference)*90 + 5).toString() + "%"
+            graphBody.push({porcentage: porcentage, title: title, cx: cx.toString() + "%"})
         }
+
+        let lateralValues = [{value: returnGraphR$(graphMax), y: "6%"}, 
+                            {value: returnGraphR$((graphMax - graphMin)*0.75 + graphMin), y: "28.5%"}, 
+                            {value: returnGraphR$((graphMax - graphMin)*0.5 + graphMin), y: "51%"}, 
+                            {value: returnGraphR$((graphMax - graphMin)*0.25 + graphMin), y: "73.5%"}, 
+                            {value: returnGraphR$(graphMin), y: "96%"}]
 
         infoDetArray.push({category: categoryName, 
                         transactions: categoryTransactions.reverse(), 
                         result: result, 
                         graph: {
                             body: graphBody,
-                            lateral: [{value: "R$ 0.4k", y: "6%"}, 
-                                {value: "R$ ?", y: "28.5%"}, 
-                                {value: "R$ ?", y: "51%"}, 
-                                {value: "R$ ?", y: "73.5%"}, 
-                                {value: "R$ 0,00", y: "96%"}]
+                            lateral: lateralValues
                         }
                     })
     }

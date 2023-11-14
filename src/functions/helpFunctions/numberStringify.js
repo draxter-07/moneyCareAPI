@@ -9,7 +9,7 @@ export function add0(numberString){
 
 export function returnR$(number){
     let type;
-    if (number > 0){
+    if (number >= 0){
         type = 1;
     }
     else{
@@ -33,4 +33,12 @@ export function returnR$(number){
     number = "R$ " + number;
 
     return [number, type];
+}
+
+export function returnGraphR$(number){
+    let [value, type] = returnR$(number);
+    if(type == 0){
+        value = value.replaceAll("R$ ", "R$ -")
+    }
+    return value.split(",")[0];
 }
