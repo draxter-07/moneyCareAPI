@@ -3,8 +3,63 @@ import { verifyItem, arrange, noDayArrange } from "./helpFunctions/array.js"
 
 export default function getHome(req, res){
     let a = {userLog: {userName: "Philippe", email: "philippe.idalgoprestes@gmail.com", password: "123456789", userSince: {day: 7, month: 9, year: 2023}},
-            categories: ["Mensal", "Crédito"],
-            transactions: [{name: "UCI", value: -28, date: {day: 1, month: 11, year: 2023}, categories: ["Mensal"]},
+            categories: ["Mensal", "Crédito", "Salário", "Nubank > Toro", "Toro > Nubank"],
+            transactions: [{name: "Nubank > 99", value: -10, date: {day: 9, month: 8, year: 2023}, categories: ["Mensal"]},
+                        {name: "Uber", value: -6.93, date: {day: 9, month: 8, year: 2023}, categories: ["Mensal"]},
+                        {name: "Nubank > 99", value: -10, date: {day: 10, month: 8, year: 2023}, categories: ["Mensal"]},
+                        {name: "Nubank > 99", value: -10, date: {day: 10, month: 8, year: 2023}, categories: ["Mensal"]},
+                        {name: "Nubank > 99", value: -10, date: {day: 14, month: 8, year: 2023}, categories: ["Mensal"]},
+                        {name: "Nubank > 99", value: -10, date: {day: 17, month: 8, year: 2023}, categories: ["Mensal"]},
+                        {name: "Nubank > 99", value: -10, date: {day: 18, month: 8, year: 2023}, categories: ["Mensal"]},
+                        {name: "Nubank > 99", value: -10, date: {day: 18, month: 8, year: 2023}, categories: ["Mensal"]},
+                        {name: "Nubank > 99", value: -10, date: {day: 20, month: 8, year: 2023}, categories: ["Mensal"]},
+                        {name: "Pagamento da fatura", value: -265.18, date: {day: 20, month: 8, year: 2023}, categories: ["Mensal", "Crédito"]},
+                        {name: "Nubank > Mayara Taborda", value: -10, date: {day: 20, month: 8, year: 2023}, categories: ["Mensal"]},
+                        {name: "Nubank > André Feitosa", value: -9, date: {day: 22, month: 8, year: 2023}, categories: ["Mensal"]},
+                        {name: "Salário", value: 868.87, date: {day: 29, month: 8, year: 2023}, categories: ["Mensal", "Salário"]},
+                        {name: "Pagamento da fatura", value: -183.10, date: {day: 29, month: 8, year: 2023}, categories: ["Mensal", "Crédito"]},
+                        {name: "Nubank > Toro", value: -180, date: {day: 30, month: 8, year: 2023}, categories: ["Mensal", "Nubank > Toro"]},
+                        {name: "Nubank > André Feitosa", value: -6, date: {day: 22, month: 8, year: 2023}, categories: ["Mensal"]},
+                        {name: "Salário", value: 1271.85, date: {day: 5, month: 9, year: 2023}, categories: ["Mensal", "Salário"]},
+                        {name: "Nubank > Toro", value: -200, date: {day: 5, month: 9, year: 2023}, categories: ["Mensal", "Nubank > Toro"]},
+                        {name: "Cheers", value: -73.50, date: {day: 5, month: 9, year: 2023}, categories: ["Mensal"]},
+                        {name: "Churrasco João", value: -22.01, date: {day: 9, month: 9, year: 2023}, categories: ["Mensal"]},
+                        {name: "Pagamento da fatura", value: -181.17, date: {day: 15, month: 9, year: 2023}, categories: ["Mensal", "Crédito"]},
+                        {name: "Toro > Nubank", value: 151.91, date: {day: 18, month: 9, year: 2023}, categories: ["Mensal", "Toro > Nubank"]},
+                        {name: "RU", value: -3.50, date: {day: 18, month: 9, year: 2023}, categories: ["Mensal"]},
+                        {name: "RU", value: -3.50, date: {day: 27, month: 9, year: 2023}, categories: ["Mensal"]},
+                        {name: "Toro > Nubank", value: 195, date: {day: 29, month: 9, year: 2023}, categories: ["Mensal", "Toro > Nubank"]},
+                        {name: "Pagamento da fatura", value: -5.73, date: {day: 30, month: 9, year: 2023}, categories: ["Mensal", "Crédito"]},
+                        {name: "Posto", value: -34.98, date: {day: 30, month: 9, year: 2023}, categories: ["Mensal"]},
+                        {name: "Pagamento da fatura", value: -13.91, date: {day: 30, month: 9, year: 2023}, categories: ["Mensal", "Crédito"]},
+                        {name: "RU", value: -3.50, date: {day: 2, month: 10, year: 2023}, categories: ["Mensal"]},
+                        {name: "Nubank > Toro", value: -195, date: {day: 3, month: 10, year: 2023}, categories: ["Mensal", "Nubank > Toro"]},
+                        {name: "Nubank > Toro", value: -800, date: {day: 4, month: 10, year: 2023}, categories: ["Mensal", "Nubank > Toro"]},
+                        {name: "Venda ingresso", value: 70, date: {day: 5, month: 10, year: 2023}, categories: ["Mensal"]},
+                        {name: "Rescisão", value: 673, date: {day: 6, month: 10, year: 2023}, categories: ["Mensal"]},
+                        {name: "Pagamento da fatura", value: -151.82, date: {day: 6, month: 10, year: 2023}, categories: ["Mensal", "Crédito"]},
+                        {name: "Pagamento da fatura", value: -13.91, date: {day: 6, month: 10, year: 2023}, categories: ["Mensal", "Crédito"]},
+                        {name: "Comida", value: -4, date: {day: 9, month: 10, year: 2023}, categories: ["Mensal", "Crédito"]},
+                        {name: "RU", value: -3.50, date: {day: 9, month: 10, year: 2023}, categories: ["Mensal"]},
+                        {name: "UCI", value: -35, date: {day: 12, month: 10, year: 2023}, categories: ["Mensal"]},
+                        {name: "Americanas", value: -99, date: {day: 12, month: 10, year: 2023}, categories: ["Mensal"]},
+                        {name: "Pagamento da fatura", value: -13.63, date: {day: 13, month: 10, year: 2023}, categories: ["Mensal", "Crédito"]},
+                        {name: "Nubank > Toro", value: -850, date: {day: 13, month: 10, year: 2023}, categories: ["Mensal", "Nubank > Toro"]},
+                        {name: "Pagamento da fatura", value: -21.06, date: {day: 14, month: 10, year: 2023}, categories: ["Mensal", "Crédito"]},
+                        {name: "Toro > Nubank", value: 832.29, date: {day: 16, month: 10, year: 2023}, categories: ["Mensal", "Toro > Nubank"]},
+                        {name: "Boticário", value: -73.12, date: {day: 17, month: 10, year: 2023}, categories: ["Mensal"]},
+                        {name: "Boticário", value: -73.12, date: {day: 17, month: 10, year: 2023}, categories: ["Mensal"]},
+                        {name: "Nubank > Toro", value: -26.88, date: {day: 19, month: 10, year: 2023}, categories: ["Mensal", "Nubank > Toro"]},
+                        {name: "Pagamento da fatura", value: -7.35, date: {day: 20, month: 10, year: 2023}, categories: ["Mensal", "Crédito"]},
+                        {name: "Nubank > Toro", value: -271.56, date: {day: 20, month: 10, year: 2023}, categories: ["Mensal", "Nubank > Toro"]},
+                        {name: "Pagamento da fatura", value: -17.22, date: {day: 20, month: 10, year: 2023}, categories: ["Mensal", "Crédito"]},
+                        {name: "Mercado Livre", value: -94.50, date: {day: 21, month: 10, year: 2023}, categories: ["Mensal"]},
+                        {name: "Pagamento da fatura", value: -25.33, date: {day: 23, month: 10, year: 2023}, categories: ["Mensal", "Crédito"]},
+                        {name: "RU", value: -3.50, date: {day: 24, month: 10, year: 2023}, categories: ["Mensal"]},
+                        {name: "Luana gripada", value: -58.31, date: {day: 25, month: 10, year: 2023}, categories: ["Mensal"]},
+                        {name: "Toro > Nubank", value: 37.69, date: {day: 26, month: 10, year: 2023}, categories: ["Mensal", "Toro > Nubank"]},
+                        {name: "Nubank > Toro", value: -200, date: {day: 30, month: 10, year: 2023}, categories: ["Mensal", "Nubank > Toro"]},
+                        {name: "UCI", value: -28, date: {day: 1, month: 11, year: 2023}, categories: ["Mensal"]},
                         {name: "Burguer King", value: -30.80, date: {day: 1, month: 11, year: 2023}, categories: ["Mensal"]},
                         {name: "Pagamento da fatura", value: -6.13, date: {day: 2, month: 11, year: 2023}, categories: ["Mensal", "Crédito"]},
                         {name: "Sirene com o Blitzkow e Petrich", value: -20, date: {day: 4, month: 11, year: 2023}, categories: ["Mensal"]},
@@ -13,7 +68,7 @@ export default function getHome(req, res){
                         {name: "Torta de maçã da Luana", value: -7.90, date: {day: 10, month: 11, year: 2023}, categories: ["Mensal"]},
                         {name: "Pagamento da fatura", value: -22.60, date: {day: 12, month: 11, year: 2023}, categories: ["Mensal", "Crédito"]},
                         {name: "Pagamento da fatura", value: -11.50, date: {day: 12, month: 11, year: 2023}, categories: ["Mensal", "Crédito"]},
-                        {name: "Toro > Nubank", value: 47.87, date: {day: 13, month: 11, year: 2023}, categories: ["Mensal"]}]
+                        {name: "Toro > Nubank", value: 47.87, date: {day: 13, month: 11, year: 2023}, categories: ["Mensal", "Toro > Nubank"]}]
             }
     let d = new Date();
     let nowMonth = d.getMonth() + 1;
@@ -143,9 +198,9 @@ export default function getHome(req, res){
         }
         
         // Estabelece uma distância mínima entre eles
-        if(graphMax - graphMin < 100){
-            graphMax += 50;
-            graphMin -+ 50;
+        if(graphMax - graphMin < 50){
+            graphMax += 10;
+            graphMin -= 10;
         }
 
         categoryMonthResult = noDayArrange(categoryMonthResult)
