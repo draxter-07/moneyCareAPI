@@ -20,13 +20,14 @@ export default function getHome(req, res){
     let nowYear = d.getFullYear();
     let infoBasArray = [];
     let infoDetArray = [];
+    let monthEarningsExpenses = [];
+    let medMonthResult = 0;
 
     for(let catIndex = 0; catIndex < a.categories.length; catIndex++){
         let categoryName = a.categories[catIndex];
         let categoryTransactions = [];
         let categoryTransactionsTotal = 0;
         let categoryMonthResult = [];
-        let monthEarningsExpenses = [];
 
         for(let transIndex = 0; transIndex < a.transactions.length; transIndex++){
             let trans = a.transactions[transIndex];
@@ -71,10 +72,10 @@ export default function getHome(req, res){
                     for(let meeIndex = 0; meeIndex < monthEarningsExpenses.length; meeIndex++){
                         if(categoryMonthResult[meeIndex].date.year == trans.date.year && categoryMonthResult[meeIndex].date.month == trans.date.month){
                             if(trans.value < 0){
-                                categoryMonthResult[meeIndex].expenses += trans.value;
+                                monthEarningsExpenses[meeIndex].expenses += trans.value;
                             }
                             else{
-                                categoryMonthResult[meeIndex].earnings += trans.value;
+                                monthEarningsExpenses[meeIndex].earnings += trans.value;
                             }
                             break;
                         }
@@ -150,7 +151,7 @@ export default function getHome(req, res){
         categoryMonthResult = noDayArrange(categoryMonthResult)
         
         let graphBody = [];
-        //gera as porcentagens no gráfico
+        //gera as porcentagens no gráfico e já pega o valor dos resultados para infoBas
         let cx = -2.5;
         for(let cmrIndex3 = 0; cmrIndex3 < categoryMonthResult.length; cmrIndex3++){
             cx += 7.5
@@ -158,6 +159,9 @@ export default function getHome(req, res){
             let title = add0(cat.date.month.toString()) + "/" + cat.date.year.toString() + ": " + returnGraphR$(cat.result)
             let reference = graphMax - graphMin
             let porcentage = Math.round(((graphMax - cat.result)/reference)*90 + 5).toString() + "%"
+            if(categoryName == "Mensal"){
+                medMonthResult += cat.result;
+            }
             graphBody.push({porcentage: porcentage, title: title, cx: cx.toString() + "%"})
         }
 
@@ -177,9 +181,19 @@ export default function getHome(req, res){
                     })
     }
 
-    let infoBasObj = [{name: "Saldo médio mensal", value: "R$ 50,00", type: 1}, 
-                    {name: "Ganhos médios mensais", value: "R$ 100,00", type: 1}, 
-                    {name: "Gastos médios mensais", value: "R$ 50,00", type: 0}]
+    let medMonthEarnings = 0, medMonthExpenses = 0;
+    for(let meeIndex2 = 0; meeIndex2 < monthEarningsExpenses.length; meeIndex2++){
+        medMonthEarnings += monthEarningsExpenses[meeIndex2].earnings
+        medMonthExpenses += monthEarningsExpenses[meeIndex2].expenses
+    }
+
+    medMonthResult /= monthEarningsExpenses.length
+    medMonthEarnings /= monthEarningsExpenses.length
+    medMonthExpenses /= monthEarningsExpenses.length
+
+    let infoBasObj = [{name: "Saldo médio mensal", value: returnR$(medMonthResult)[0], type: returnR$(medMonthResult)[1]}, 
+                    {name: "Ganhos médios mensais", value: returnR$(medMonthEarnings)[0], type: returnR$(medMonthEarnings)[1]}, 
+                    {name: "Gastos médios mensais", value: returnR$(medMonthExpenses)[0], type: returnR$(medMonthExpenses)[1]}]
 
     let object = {
         infoBas: infoBasObj,
