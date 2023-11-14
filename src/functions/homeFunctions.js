@@ -11,6 +11,7 @@ export default function getHome(req, res){
     let infoDetArray = [];
     let monthEarningsExpenses = [];
     let medMonthResult = 0;
+    a.transactions = arrange(a.transactions)
 
     for(let catIndex = 0; catIndex < a.categories.length; catIndex++){
         let categoryName = a.categories[catIndex];
