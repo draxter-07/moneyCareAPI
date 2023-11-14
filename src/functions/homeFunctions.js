@@ -1,12 +1,9 @@
 import { add0, returnR$, returnGraphR$ } from "./helpFunctions/numberStringify.js"
 import { verifyItem, arrange, noDayArrange } from "./helpFunctions/array.js"
-import { transactions } from "./transactions.js"
+import { data } from "./transactions.js"
 
 export default function getHome(req, res){
-    let a = {userLog: {userName: "Philippe", email: "philippe.idalgoprestes@gmail.com", password: "123456789", userSince: {day: 7, month: 9, year: 2023}},
-            categories: ["Mensal", "Crédito", "Salário", "Nubank > Toro", "Toro > Nubank"],
-            transactions: transactions
-            }
+    let a = data
     let d = new Date();
     let nowMonth = d.getMonth() + 1;
     let nowYear = d.getFullYear();
