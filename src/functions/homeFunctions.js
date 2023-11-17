@@ -133,9 +133,9 @@ export default function getHome(req, res){
         }
         
         // Estabelece uma distância mínima entre eles
-        if(graphMax - graphMin < 50){
-            graphMax += 10;
-            graphMin -= 10;
+        if(graphMax - graphMin < 10){
+            graphMax += 5;
+            graphMin -= 5;
         }
 
         categoryMonthResult = noDayArrange(categoryMonthResult)
