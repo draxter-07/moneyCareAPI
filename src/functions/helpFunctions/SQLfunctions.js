@@ -10,22 +10,31 @@ const client = new PG.Pool({
     port: process.env.SQLPORT,
 })
 
-function query(text){
-    client.query(text, (err, res) => {if(err){console.log(err);return false}else{return true}});
+async function query(text){
+    let r = await client.query(text)
+    return r
 };
 
 export function sqlConnect(){
-    client.connect(function(err){if (err){throw(err)};console.log("Connected to SQL");});
+    client.connect(function(err){if(err){console.log(err)}else{console.log("Connected to SQL")}})
 }
 
 export function sqlCreateTable(){
     query("CREATE TABLE users(userId SERIAL NOT NULL, userName text NOT NULL, email text NOT NULL, password text NOT NULL)")
+    query("CREATE TABLE userSince(userId integer NOT NULL, year integer NOT NULL, month integer NOT NULL, day integer NOT NULL)")
+    query("CREATE TABLE transactions(userId integer NOT NULL, transId SERIAL NOT NULL, name text NOT NULL, value float NOT NULL, categories text array[15] NOT NULL)")
+    query("CREATE TABLE transDate(transId integer NOT NULL, year integer NOT NULL, month integer NOT NULL, day integer NOT NULL)")
 }
 
 export function sqlInsert(){
-    query(`INSERT INTO users (userName, email, password) VALUES ('Philippe', 'philippe.idalgoprestes@gmail.com', '123456789');`)
+    query(`INSERT INTO transactions (userId, name, value, categories) VALUES (0, 'teste', -20, array['Mensal', 'things']);`)
 }
 
 export function sqlDelete(){
     query("DELETE FROM users")
+}
+
+export async function sqlSelect(){
+    const r = await query(`SELECT * FROM transactions`)
+    return r;
 }

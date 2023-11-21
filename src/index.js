@@ -1,6 +1,6 @@
 import express from 'express'
 import cors from 'cors'
-import { sqlConnect, sqlCreateTable, sqlDelete, sqlInsert } from './functions/helpFunctions/SQLfunctions.js'
+import { sqlConnect, sqlCreateTable, sqlDelete, sqlInsert, sqlSelect } from './functions/helpFunctions/SQLfunctions.js'
 
 import getHome from "./functions/homeFunctions.js"
 
@@ -9,7 +9,10 @@ app.use(express.json());
 app.use(cors());
 
 sqlConnect()
+//sqlCreateTable()
 //sqlInsert()
+//const r = await sqlSelect()
+//console.log(r.rows[0].categories)
 //sqlDelete()
 
 app.get("/home", getHome);
