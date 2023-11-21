@@ -11,8 +11,8 @@ app.use(cors());
 sqlConnect()
 //sqlCreateTable()
 //sqlInsert()
-const r = await sqlSelect()
-console.log(r.rows[3].transactions)
+//const r = await sqlSelect()
+//console.log(r.rows[3].transactions)
 //console.log(r.rows[1].userlog.userSince.day)
 //sqlDelete()
 
