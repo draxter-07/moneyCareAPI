@@ -11,8 +11,9 @@ app.use(cors());
 sqlConnect()
 //sqlCreateTable()
 //sqlInsert()
-//const r = await sqlSelect()
-//console.log(r.rows[0].categories)
+const r = await sqlSelect()
+console.log(r.rows[3].transactions)
+//console.log(r.rows[1].userlog.userSince.day)
 //sqlDelete()
 
 app.get("/home", getHome);

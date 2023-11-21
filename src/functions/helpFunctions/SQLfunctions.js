@@ -20,14 +20,16 @@ export function sqlConnect(){
 }
 
 export function sqlCreateTable(){
-    query("CREATE TABLE users(userId SERIAL NOT NULL, userName text NOT NULL, email text NOT NULL, password text NOT NULL)")
-    query("CREATE TABLE userSince(userId integer NOT NULL, year integer NOT NULL, month integer NOT NULL, day integer NOT NULL)")
-    query("CREATE TABLE transactions(userId integer NOT NULL, transId SERIAL NOT NULL, name text NOT NULL, value float NOT NULL, categories text array[15] NOT NULL)")
-    query("CREATE TABLE transDate(transId integer NOT NULL, year integer NOT NULL, month integer NOT NULL, day integer NOT NULL)")
+    query("CREATE TABLE users(userId SERIAL NOT NULL, userLog JSON NOT NULL, categories text array[15] NOT NULL, transactions JSON array[10000])")
 }
 
 export function sqlInsert(){
-    query(`INSERT INTO transactions (userId, name, value, categories) VALUES (0, 'teste', -20, array['Mensal', 'things']);`)
+    query(`INSERT INTO users(userLog, categories, transactions) VALUES(
+        cast('{"userName": "Philippe", "email": "philippe.idalgoprestes@gmail.com", "password": "123456789", "userSince": {"day": 7, "month": 9, "year": 2023}}' as json), 
+        array['Mensal', 'Crédito', 'Salário', 'DARF', 'Nubank > Toro', 'Toro > Nubank'], 
+        array[cast('{"name": "Nubank > 99", "value": -10, "date": {"day": 9, "month": 8, "year": 2023}, "categories": ["Mensal"]}' as json),
+        cast('{"name": "Uber", "value": -6.93, "date": {"day": 9, "month": 8, "year": 2023}, "categories": ["Mensal"]}' as json)]
+        )`)
 }
 
 export function sqlDelete(){
@@ -35,6 +37,6 @@ export function sqlDelete(){
 }
 
 export async function sqlSelect(){
-    const r = await query(`SELECT * FROM transactions`)
+    const r = await query(`SELECT * FROM users`)
     return r;
 }
