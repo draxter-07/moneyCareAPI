@@ -186,6 +186,7 @@ export default function getHome(req, res){
                     {name: "Gastos médios mensais", value: returnR$(medMonthExpenses)[0], type: returnR$(medMonthExpenses)[1]}]
 
     let object = {
+        userInfo: {name: "Philippe"},
         infoBas: infoBasObj,
         infoDet: infoDetArray
     }

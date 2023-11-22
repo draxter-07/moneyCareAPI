@@ -8,7 +8,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-sqlConnect()
+//sqlConnect()
 //sqlCreateTable()
 //sqlInsert()
 //const r = await sqlSelect()
@@ -17,5 +17,6 @@ sqlConnect()
 //sqlDelete()
 
 app.get("/home", getHome);
+app.post("/login", (req,res) => {res.send("oi")})
 
 app.listen(5000, () => console.log("Running on port 5000"));
