@@ -3,7 +3,7 @@ import cors from 'cors'
 import { sqlConnect, sqlCreateTable, sqlDelete, sqlInsert, sqlSelect } from './functions/helpFunctions/SQLfunctions.js'
 
 import getHome from "./functions/homeFunctions.js"
-import postLogin from "./functions/startFunctions.js"
+import { postLogin, postSignUp } from "./functions/startFunctions.js"
 
 const app = express();
 app.use(express.json());
@@ -19,5 +19,6 @@ app.use(cors());
 
 app.get("/home", getHome);
 app.post("/login", postLogin);
+app.post("/signup", postSignUp);
 
 app.listen(5000, () => console.log("Running on port 5000"));
