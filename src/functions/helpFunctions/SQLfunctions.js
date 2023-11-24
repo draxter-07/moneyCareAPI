@@ -26,13 +26,12 @@ export function sqlCreateTable(){
 }
 
 export async function sqlInsertNewUser(userName, userEmail, userPassword){
-    //await query(`INSERT INTO users(userLog, categories) VALUES(
-    //    cast('{"userName": "${userName}", "email": "${userEmail}", "password": "${userPassword}", "userSince": {"day": ${date.getDate()}, "month": ${date.getMonth() + 1}, "year": ${date.getFullYear()}}}' as json), 
-    //    array['Mensal']
-    //    )`)
+    query(`INSERT INTO users(userLog, categories) VALUES(
+        cast('{"userName": "${userName}", "email": "${userEmail}", "password": "${userPassword}", "userSince": {"day": ${date.getDate()}, "month": ${date.getMonth() + 1}, "year": ${date.getFullYear()}}}' as json), 
+        array['Mensal']
+        )`)
     const r = await query(`SELECT userid, userlog FROM users WHERE categories=array['Mensal']`)
     const rows = r.rows
-    console.log(rows)
     for(let i = 0; i < rows.length; i++){
         if(rows[i].userlog.email == userEmail){
             return (rows[i].userid)

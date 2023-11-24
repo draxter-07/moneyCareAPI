@@ -12,16 +12,15 @@ export async function postSignUp(req, res){
     let userName = req.body.name
     let userEmail = req.body.email
     let userPassword = req.body.password
-    let status, data;
+    let status = 404, data = null;
 
     if(await sqlCheckExistingEmail(userEmail)){
-        status = 409;
-        data = null;
+        status = 409
     }
     else{
         const userID = await sqlInsertNewUser(userName, userEmail, userPassword)
-        status = 200;
-        data = userID;
+        status = 200
+        data = await userID
     }
-    res.status(status).send().end()
+    res.status(status).json({data: data}).end()
 }
