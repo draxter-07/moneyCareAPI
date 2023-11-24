@@ -25,11 +25,19 @@ export function sqlCreateTable(){
     query("CREATE TABLE users(userId SERIAL NOT NULL, userLog JSON NOT NULL, categories text array[15] NOT NULL, transactions JSON array[10000])")
 }
 
-export function sqlInsertNewUser(userName, userEmail, userPassword){
-    query(`INSERT INTO users(userLog, categories) VALUES(
-        cast('{"userName": "${userName}", "email": "${userEmail}", "password": "${userPassword}", "userSince": {"day": ${date.getDate()}, "month": ${date.getMonth() + 1}, "year": ${date.getFullYear()}}}' as json), 
-        array['Mensal']
-        )`)
+export async function sqlInsertNewUser(userName, userEmail, userPassword){
+    //await query(`INSERT INTO users(userLog, categories) VALUES(
+    //    cast('{"userName": "${userName}", "email": "${userEmail}", "password": "${userPassword}", "userSince": {"day": ${date.getDate()}, "month": ${date.getMonth() + 1}, "year": ${date.getFullYear()}}}' as json), 
+    //    array['Mensal']
+    //    )`)
+    const r = await query(`SELECT userid, userlog FROM users WHERE categories=array['Mensal']`)
+    const rows = r.rows
+    console.log(rows)
+    for(let i = 0; i < rows.length; i++){
+        if(rows[i].userlog.email == userEmail){
+            return (rows[i].userid)
+        }
+    }
 }
 
 export async function sqlInsertNewTransition(userID, transaction){
@@ -43,15 +51,6 @@ export async function sqlInsertNewTransition(userID, transaction){
     query(`UPDATE users SET transactions=array[${stringObjects}cast('{"name": "${transaction.name}", "value": ${transaction.value}, "date": {"day": ${transaction.date.day}, "month": ${transaction.date.month}, "year": ${transaction.date.year}}, "categories": ["${transaction.categories.toString().replaceAll(",",'","')}"]}' as json)] WHERE userid=${userID}`)
 }
 
-export function sqlInsert(){
-    query(`INSERT INTO users(userLog, categories, transactions) VALUES(
-        cast('{"userName": "Philippe", "email": "philippe.idalgoprestes@gmail.com", "password": "123456789", "userSince": {"day": 7, "month": 9, "year": 2023}}' as json), 
-        array['Mensal', 'Crédito', 'Salário', 'DARF', 'Nubank > Toro', 'Toro > Nubank'], 
-        array[cast('{"name": "Nubank > 99", "value": -10, "date": {"day": 9, "month": 8, "year": 2023}, "categories": ["Mensal"]}' as json),
-        cast('{"name": "Uber", "value": -6.93, "date": {"day": 9, "month": 8, "year": 2023}, "categories": ["Mensal"]}' as json)]
-        )`)
-}
-
 export function sqlDelete(){
     query("DELETE FROM users")
 }
@@ -59,4 +58,15 @@ export function sqlDelete(){
 export async function sqlSelect(){
     const r = await query(`SELECT * FROM users`)
     return r;
+}
+
+export async function sqlCheckExistingEmail(email){
+    const r = await query(`SELECT userlog FROM users`)
+    const rows = r.rows
+    for(let i = 0; i < rows.length; i++){
+        if(rows[i].userlog.email == email){
+            return true
+        }
+    }
+    return false
 }
