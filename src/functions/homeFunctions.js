@@ -1,9 +1,8 @@
 import { add0, returnR$, returnGraphR$ } from "./helpFunctions/numberStringify.js"
 import { verifyItem, arrange, noDayArrange } from "./helpFunctions/array.js"
-import { data } from "./transactions.js"
 
 export default function getHome(req, res){
-    let a = data
+    let a = []
     let d = new Date();
     let nowMonth = d.getMonth() + 1;
     let nowYear = d.getFullYear();

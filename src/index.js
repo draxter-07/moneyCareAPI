@@ -1,6 +1,6 @@
 import express from 'express'
 import cors from 'cors'
-import { sqlConnect } from './functions/helpFunctions/SQLfunctions.js'
+import { sqlCreateTable } from './functions/helpFunctions/SQLfunctions.js'
 
 import getHome from "./functions/homeFunctions.js"
 import { postLogin, postSignUp } from "./functions/startFunctions.js"
