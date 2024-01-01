@@ -22,7 +22,7 @@ export function sqlConnect(){
 }
 
 export function sqlCreateTable(){
-    query("CREATE TABLE users(userId SERIAL NOT NULL, userLog JSON NOT NULL, categories text array[15] NOT NULL, transactions JSON array[10000])")
+    query("CREATE TABLE users(userId SERIAL NOT NULL PRIMARY KEY, userLog JSON NOT NULL, categories text array[15] NOT NULL, transactions JSON array[10000])")
 }
 
 export async function sqlInsertNewUser(userName, userEmail, userPassword){

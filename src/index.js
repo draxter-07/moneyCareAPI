@@ -9,7 +9,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-//sqlCreateTable()
+sqlCreateTable()
 //sqlInsert()
 //const r = await sqlSelect()
 //console.log(r.rows[0].transactions)
