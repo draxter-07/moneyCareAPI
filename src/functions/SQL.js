@@ -16,7 +16,7 @@ async function query(text){
     return r
 };
 
-client.connect(function(err){if(err){console.log(err)}else{console.log("Connected to SQL")}})
+//client.connect(function(err){if(err){console.log(err)}else{console.log("Connected to SQL")}})
 
 export function sqlCreateTable(){
     query("CREATE TABLE users(userId SERIAL NOT NULL PRIMARY KEY, userLog JSON NOT NULL, categories text array[15] NOT NULL, transactions JSON array[10000])")
