@@ -1,9 +1,8 @@
-import { add0, returnR$, returnGraphR$ } from "./helpFunctions/numberStringify.js"
-import { verifyItem, arrange, noDayArrange } from "./helpFunctions/array.js"
-import { data } from "./transactions.js"
+import { add0, returnR$, returnGraphR$ } from "./numberStringify.js"
+import { verifyItem, arrange, noDayArrange } from "./array.js"
 
 export default function getHome(req, res){
-    let a = data
+    let a = {categories: ["Mensal", "Salário"], transactions: [{name: "oi", value: 30, date: {day: 4, month: 1, year: 2024}}]}
     let d = new Date();
     let nowMonth = d.getMonth() + 1;
     let nowYear = d.getFullYear();

@@ -1,7 +1,6 @@
 import PG from 'pg' 
 import dotenv from 'dotenv'
 
-const date = new Date;
 dotenv.config()
 
 const client = new PG.Pool({
@@ -25,9 +24,9 @@ export function sqlCreateTable(){
     query("CREATE TABLE users(userId SERIAL NOT NULL PRIMARY KEY, userLog JSON NOT NULL, categories text array[15] NOT NULL, transactions JSON array[10000])")
 }
 
-export async function sqlInsertNewUser(userName, userEmail, userPassword){
+export async function sqlInsertNewUser(userName, userEmail, userPassword, date){
     query(`INSERT INTO users(userLog, categories) VALUES(
-        cast('{"userName": "${userName}", "email": "${userEmail}", "password": "${userPassword}", "userSince": {"day": ${date.getDate()}, "month": ${date.getMonth() + 1}, "year": ${date.getFullYear()}}}' as json), 
+        cast('{"userName": "${userName}", "email": "${userEmail}", "password": "${userPassword}", "userSince": {"day": ${date.day}, "month": ${date.month}, "year": ${date.year}}}' as json), 
         array['Mensal']
         )`)
     const r = await query(`SELECT userid, userlog FROM users WHERE categories=array['Mensal']`)
@@ -68,4 +67,14 @@ export async function sqlCheckExistingEmail(email){
         }
     }
     return false
+}
+
+export async function sqlFindUser(userEmail){
+    const r = await query(`SELECT userid, userlog FROM users`)
+    const rows = r.rows
+    for(let i = 0; i < rows.length; i++){
+        if(rows[i].userlog.email == userEmail){
+            return({userID: rows[i].userid, userLog: rows[i].userlog})
+        }
+    }
 }

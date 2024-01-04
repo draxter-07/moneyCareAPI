@@ -1,15 +1,13 @@
 import express from 'express'
 import cors from 'cors'
-import { sqlConnect } from './functions/helpFunctions/SQLfunctions.js'
 
-import getHome from "./functions/homeFunctions.js"
-import { postLogin, postSignUp } from "./functions/startFunctions.js"
+import getHome from "./functions/home.js"
+import { postLogin, postSignUp } from "./functions/start.js"
 
 const app = express();
 app.use(express.json());
 app.use(cors());
 
-sqlCreateTable()
 //sqlInsert()
 //const r = await sqlSelect()
 //console.log(r.rows[0].transactions)
